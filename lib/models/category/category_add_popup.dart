@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:money_management_application/db/category/category_db.dart';
 import 'package:money_management_application/models/category/category_model.dart';
 
 ValueNotifier<CategoryType> selectedCategoryNotifier =
     ValueNotifier(CategoryType.income);
 
 Future<void> showCategoryAddPopup(BuildContext context) async {
+  final _nameEditingController = TextEditingController();
   showModalBottomSheet<dynamic>(
       isScrollControlled: true,
       context: context,
@@ -18,6 +20,7 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                 TextField(
                   decoration: InputDecoration(
                       hintText: 'Category Name', icon: Icon(Icons.abc)),
+                  controller: _nameEditingController,
                 ),
                 Row(
                   children: const [
@@ -30,6 +33,19 @@ Future<void> showCategoryAddPopup(BuildContext context) async {
                   children: [
                     ElevatedButton(
                         onPressed: () {
+                          final _name = _nameEditingController.text;
+                          if (_name.isEmpty) return;
+
+                          final _type = selectedCategoryNotifier.value;
+                          final _category = CategoryModel(
+                              id: DateTime.now()
+                                  .microsecondsSinceEpoch
+                                  .toString(),
+                              name: _name,
+                              type: _type);
+
+                          CategoryDB().insertCategory(_category);
+
                           Navigator.of(ctx1).pop();
                         },
                         child: Text('Add')),

@@ -78,11 +78,7 @@ Future<void> showTransactionAdd(BuildContext context) async {
                           )
                         ],
                       ),
-                      DropdownButton(
-                        hint: const Text("Select Category"),
-                        items: (_selectedType==CategoryType.income?
-                        CategoryDB), 
-                        onChanged: onChanged)
+                      
                     ],
                   ),
                 )),
