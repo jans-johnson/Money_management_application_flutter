@@ -9,6 +9,7 @@ const CATEGORY_DB_NAME = 'category-database';
 abstract class CategoryDbFunctions {
   Future<List<CategoryModel>> getCategories();
   Future<void> insertCategory(CategoryModel value);
+  Future<void> deleteCategory(String categoryID);
 }
 
 class CategoryDB implements CategoryDbFunctions {
@@ -26,7 +27,7 @@ class CategoryDB implements CategoryDbFunctions {
   @override
   Future<void> insertCategory(CategoryModel value) async {
     final _categoryDB = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
-    await _categoryDB.add(value);
+    await _categoryDB.put(value.id,value);
     refreshUI();
   }
 
@@ -50,5 +51,13 @@ class CategoryDB implements CategoryDbFunctions {
 
     incomeCategoryList.notifyListeners();
     expenseCategoryList.notifyListeners();
+  }
+
+  @override
+  Future<void> deleteCategory(String categoryID) async {
+    // TODO: implement deleteCategory
+    final _categoryDB = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
+    await _categoryDB.delete(categoryID);
+    refreshUI();
   }
 }

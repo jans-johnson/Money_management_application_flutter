@@ -19,7 +19,9 @@ class IncomeCategoryList extends StatelessWidget {
                     title: Text(category.name),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () {},
+                      onPressed: () {
+                        CategoryDB.instance.deleteCategory(category.id);
+                      },
                     ),
                   ),
                 );
