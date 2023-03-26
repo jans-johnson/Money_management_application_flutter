@@ -12,6 +12,14 @@ abstract class CategoryDbFunctions {
 }
 
 class CategoryDB implements CategoryDbFunctions {
+  CategoryDB._internal();
+
+  static CategoryDB instance = CategoryDB._internal();
+
+  factory CategoryDB() {
+    return instance;
+  }
+
   ValueNotifier<List<CategoryModel>> incomeCategoryList = ValueNotifier([]);
   ValueNotifier<List<CategoryModel>> expenseCategoryList = ValueNotifier([]);
 
@@ -19,6 +27,7 @@ class CategoryDB implements CategoryDbFunctions {
   Future<void> insertCategory(CategoryModel value) async {
     final _categoryDB = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
     await _categoryDB.add(value);
+    refreshUI();
   }
 
   @override

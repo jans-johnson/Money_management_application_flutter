@@ -36,13 +36,6 @@ class ScreenHome extends StatelessWidget {
           } else {
             showCategoryAddPopup(context);
 
-            final _sample = CategoryModel(
-              id: DateTime.now().microsecondsSinceEpoch.toString(),
-              name: 'Travel',
-              type: CategoryType.expense,
-            );
-
-            CategoryDB().insertCategory(_sample);
           }
         },
         child: Icon(Icons.add),
