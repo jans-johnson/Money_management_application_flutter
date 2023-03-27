@@ -4,6 +4,7 @@ import 'package:money_management_application/models/category/category_model.dart
 
 Future<void> showTransactionAdd(BuildContext context) async {
   var _selectedDate = null;
+  var _categoryID = null;
   var _selectedType = CategoryType.income;
   showModalBottomSheet<dynamic>(
       isScrollControlled: true,
@@ -48,7 +49,6 @@ Future<void> showTransactionAdd(BuildContext context) async {
                               : _selectedDate.toString())),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
                         children: [
                           Row(
                             children: [
@@ -58,6 +58,7 @@ Future<void> showTransactionAdd(BuildContext context) async {
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedType = CategoryType.income;
+                                      _categoryID = null;
                                     });
                                   }),
                               Text('Income')
@@ -71,6 +72,7 @@ Future<void> showTransactionAdd(BuildContext context) async {
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedType = CategoryType.expense;
+                                      _categoryID = null;
                                     });
                                   }),
                               Text('Expense')
@@ -78,7 +80,24 @@ Future<void> showTransactionAdd(BuildContext context) async {
                           )
                         ],
                       ),
-                      
+                      DropdownButton(
+                          hint: const Text("Select Category"),
+                          value: _categoryID,
+                          items: (_selectedType == CategoryType.income
+                                  ? CategoryDB().incomeCategoryList
+                                  : CategoryDB().expenseCategoryList)
+                              .value
+                              .map((e) {
+                            return DropdownMenuItem(
+                              child: Text(e.name),
+                              value: e.id,
+                            );
+                          }).toList(),
+                          onChanged: (selectedValue) {
+                            setState(() {
+                              _categoryID = selectedValue;
+                            });
+                          })
                     ],
                   ),
                 )),
