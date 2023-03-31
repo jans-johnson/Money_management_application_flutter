@@ -1,11 +1,17 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:money_management_application/db/category/category_db.dart';
 import 'package:money_management_application/models/category/category_model.dart';
+import 'package:money_management_application/models/transaction/transaction_model.dart';
 
+final _purposeController = TextEditingController();
+final _amountController = TextEditingController();
+var _selectedDate = null;
+var _categoryID = null;
+var _selectedType = CategoryType.income;
+CategoryModel? _selectedCategoryModel;
 Future<void> showTransactionAdd(BuildContext context) async {
-  var _selectedDate = null;
-  var _categoryID = null;
-  var _selectedType = CategoryType.income;
   showModalBottomSheet<dynamic>(
       isScrollControlled: true,
       context: context,
@@ -21,10 +27,12 @@ Future<void> showTransactionAdd(BuildContext context) async {
                     children: [
                       TextField(
                         decoration: InputDecoration(hintText: "Purpose"),
+                        controller: _purposeController,
                       ),
                       TextField(
                         decoration: InputDecoration(hintText: "Amount"),
                         keyboardType: TextInputType.number,
+                        controller: _amountController,
                       ),
                       TextButton.icon(
                           onPressed: () async {
@@ -80,28 +88,68 @@ Future<void> showTransactionAdd(BuildContext context) async {
                           )
                         ],
                       ),
-                      DropdownButton(
-                          hint: const Text("Select Category"),
-                          value: _categoryID,
-                          items: (_selectedType == CategoryType.income
-                                  ? CategoryDB().incomeCategoryList
-                                  : CategoryDB().expenseCategoryList)
-                              .value
-                              .map((e) {
-                            return DropdownMenuItem(
-                              child: Text(e.name),
-                              value: e.id,
-                            );
-                          }).toList(),
-                          onChanged: (selectedValue) {
-                            setState(() {
-                              _categoryID = selectedValue;
-                            });
-                          })
+                      Column(
+                        children: [
+                          DropdownButton(
+                              hint: const Text("Select Category"),
+                              value: _categoryID,
+                              items: (_selectedType == CategoryType.income
+                                      ? CategoryDB().incomeCategoryList
+                                      : CategoryDB().expenseCategoryList)
+                                  .value
+                                  .map((e) {
+                                return DropdownMenuItem(
+                                  child: Text(e.name),
+                                  value: e.id,
+                                  onTap: () {
+                                    _selectedCategoryModel = e;
+                                  },
+                                );
+                              }).toList(),
+                              onChanged: (selectedValue) {
+                                setState(() {
+                                  _categoryID = selectedValue;
+                                });
+                              }),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx1).pop();
+                                  },
+                                  child: Text('Add')),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(ctx1).pop();
+                                  },
+                                  child: Text('Cancel'))
+                            ],
+                          )
+                        ],
+                      )
                     ],
                   ),
                 )),
           );
         });
       });
+}
+
+Future<void> addTransaction() async {
+  final _purposeText = _purposeController.text;
+  final _amountText = _amountController.text;
+  final _amount = double.tryParse(_amountText);
+  if (_amount == null) return;
+  if (_purposeText.isEmpty ||
+      _amountText.isEmpty ||
+      _categoryID == null ||
+      _selectedDate == null) return;
+
+  final _model = TransactionModel(
+      purpose: _purposeText,
+      amount: _amount,
+      date: _selectedDate,
+      type: _selectedType,
+      category: _selectedCategoryModel!);
 }
