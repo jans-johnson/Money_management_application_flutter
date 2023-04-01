@@ -49,5 +49,6 @@ class TransactionDB implements TransactionDbFunctions {
     final _transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
     await _transactionDB.put(value.id, value);
+    refreshUI();
   }
 }

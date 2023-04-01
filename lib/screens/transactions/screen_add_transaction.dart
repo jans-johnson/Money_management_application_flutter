@@ -155,5 +155,5 @@ Future<void> addTransaction() async {
       category: _selectedCategoryModel!,
       id: DateTime.now().millisecondsSinceEpoch.toString());
 
-  TransactionDB().insertTransaction(_model);
+  TransactionDB.instance.insertTransaction(_model);
 }
