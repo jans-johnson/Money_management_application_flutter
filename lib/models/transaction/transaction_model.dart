@@ -16,11 +16,14 @@ class TransactionModel {
   @HiveField(4)
   final CategoryModel category;
 
-  TransactionModel({
-    required this.purpose,
-    required this.amount,
-    required this.date,
-    required this.type,
-    required this.category
-  });
+  @HiveField(5)
+  final String id;
+
+  TransactionModel(
+      {required this.id,
+      required this.purpose,
+      required this.amount,
+      required this.date,
+      required this.type,
+      required this.category});
 }

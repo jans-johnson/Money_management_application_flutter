@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:money_management_application/db/category/category_db.dart';
+import 'package:money_management_application/db/transactions/transaction_db.dart';
 import 'package:money_management_application/models/category/category_model.dart';
 import 'package:money_management_application/models/transaction/transaction_model.dart';
 
@@ -151,5 +152,8 @@ Future<void> addTransaction() async {
       amount: _amount,
       date: _selectedDate,
       type: _selectedType,
-      category: _selectedCategoryModel!);
+      category: _selectedCategoryModel!,
+      id: DateTime.now().millisecondsSinceEpoch.toString());
+
+  TransactionDB().insertTransaction(_model);
 }
