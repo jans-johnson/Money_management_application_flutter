@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_management_application/db/transactions/transaction_db.dart';
 
 class ScreenTransaction extends StatefulWidget {
@@ -9,6 +10,13 @@ class ScreenTransaction extends StatefulWidget {
 }
 
 class _ScreenTransactionState extends State<ScreenTransaction> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    TransactionDB().refreshUI();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -22,7 +30,7 @@ class _ScreenTransactionState extends State<ScreenTransaction> {
                   leading: CircleAvatar(
                       radius: 50,
                       child: Text(
-                        '12\ndec',
+                        DateFormat.MMMd().format(newList[index].date),//newList[index].date.
                         textAlign: TextAlign.center,
                       )),
                   title: Text(newList[index].amount.toString()),

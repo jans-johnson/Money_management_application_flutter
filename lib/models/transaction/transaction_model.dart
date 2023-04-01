@@ -20,10 +20,11 @@ class TransactionModel {
   final String id;
 
   TransactionModel(
-      {required this.id,
+      {
       required this.purpose,
       required this.amount,
       required this.date,
       required this.type,
-      required this.category});
+      required this.category,
+      required this.id});
 }

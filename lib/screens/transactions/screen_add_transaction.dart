@@ -117,6 +117,7 @@ Future<void> showTransactionAdd(BuildContext context) async {
                             children: [
                               ElevatedButton(
                                   onPressed: () {
+                                    addTransaction();
                                     Navigator.of(ctx1).pop();
                                   },
                                   child: Text('Add')),
@@ -154,6 +155,5 @@ Future<void> addTransaction() async {
       type: _selectedType,
       category: _selectedCategoryModel!,
       id: DateTime.now().millisecondsSinceEpoch.toString());
-
   TransactionDB.instance.insertTransaction(_model);
 }

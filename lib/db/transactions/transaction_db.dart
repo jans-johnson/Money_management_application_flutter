@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:money_management_application/models/transaction/transaction_model.dart';
 
-const TRANSACTION_DB_NAME = 'category-database';
+const TRANSACTION_DB_NAME = 'transaction-database';
 
 abstract class TransactionDbFunctions {
   Future<List<TransactionModel>> getTransactions();
   Future<void> insertTransaction(TransactionModel value);
-  Future<void> deleteTransaction(String categoryID);
+  Future<void> deleteTransaction(String transactionID);
 }
 
 class TransactionDB implements TransactionDbFunctions {
@@ -24,7 +24,7 @@ class TransactionDB implements TransactionDbFunctions {
       ValueNotifier([]);
 
   @override
-  Future<void> deleteTransaction(String categoryID) {
+  Future<void> deleteTransaction(String transactionID) {
     // TODO: implement deleteTransaction
     throw UnimplementedError();
   }
