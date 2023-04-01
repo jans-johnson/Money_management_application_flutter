@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:money_management_application/db/category/category_db.dart';
 import 'package:money_management_application/db/transactions/transaction_db.dart';
+import 'package:money_management_application/models/category/category_model.dart';
 
 class ScreenTransaction extends StatefulWidget {
   const ScreenTransaction({super.key});
@@ -14,6 +16,7 @@ class _ScreenTransactionState extends State<ScreenTransaction> {
   void initState() {
     // TODO: implement initState
     TransactionDB().refreshUI();
+    CategoryDB.instance.refreshUI();
     super.initState();
   }
 
@@ -28,13 +31,24 @@ class _ScreenTransactionState extends State<ScreenTransaction> {
               return Card(
                 child: ListTile(
                   leading: CircleAvatar(
-                      radius: 50,
-                      child: Text(
-                        DateFormat.MMMd().format(newList[index].date),//newList[index].date.
-                        textAlign: TextAlign.center,
-                      )),
+                    radius: 50,
+                    child: Text(
+                      DateFormat.MMMd().format(newList[index].date),
+                      textAlign: TextAlign.center,
+                    ),
+                    backgroundColor:
+                        newList[index].type == CategoryType.income
+                            ? Colors.green
+                            : Colors.red,
+                    foregroundColor: Colors.black,
+                  ),
                   title: Text(newList[index].amount.toString()),
                   subtitle: Text(newList[index].purpose),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () => TransactionDB.instance
+                        .deleteTransaction(newList[index].id),
+                  ),
                 ),
               );
             },

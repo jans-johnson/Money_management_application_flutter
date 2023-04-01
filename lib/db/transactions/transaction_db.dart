@@ -24,13 +24,16 @@ class TransactionDB implements TransactionDbFunctions {
       ValueNotifier([]);
 
   @override
-  Future<void> deleteTransaction(String transactionID) {
-    // TODO: implement deleteTransaction
-    throw UnimplementedError();
+  Future<void> deleteTransaction(String transactionID) async {
+    final _transactionDB =
+        await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
+    await _transactionDB.delete(transactionID);
+    refreshUI();
   }
 
   Future<void> refreshUI() async {
     final _list = await getTransactions();
+    _list.sort((first, second) => first.date.compareTo(second.date));
     transactionListNotifier.value.clear();
     transactionListNotifier.value.addAll(_list);
 
