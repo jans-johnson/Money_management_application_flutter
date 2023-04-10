@@ -59,7 +59,9 @@ class WeekComparison extends StatelessWidget {
             child: Row(
               children: groupedTransactionValues.map((data) {
                 return ChartBar(
-                    data['day'].toString(), data['amount'] as double,(data['amount'] as double)/totalSpending);
+                    data['day'].toString(),
+                    data['amount'] as double,
+                    totalSpending==0.0 ? 0.0 :(data['amount'] as double) / totalSpending);
               }).toList(),
             ),
           );
