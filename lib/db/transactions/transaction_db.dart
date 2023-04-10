@@ -23,6 +23,8 @@ class TransactionDB implements TransactionDbFunctions {
   ValueNotifier<List<TransactionModel>> transactionListNotifier =
       ValueNotifier([]);
 
+  List<TransactionModel> list=[];
+
   @override
   Future<void> deleteTransaction(String transactionID) async {
     final _transactionDB =
@@ -32,10 +34,10 @@ class TransactionDB implements TransactionDbFunctions {
   }
 
   Future<void> refreshUI() async {
-    final _list = await getTransactions();
-    _list.sort((first, second) => first.date.compareTo(second.date));
+    list = await getTransactions();
+    list.sort((first, second) => first.date.compareTo(second.date));
     transactionListNotifier.value.clear();
-    transactionListNotifier.value.addAll(_list);
+    transactionListNotifier.value.addAll(list);
 
     transactionListNotifier.notifyListeners();
   }
