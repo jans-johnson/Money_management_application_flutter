@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:money_management_application/db/transactions/transaction_db.dart';
 import 'package:money_management_application/models/category/category_model.dart';
 import 'package:money_management_application/models/transaction/transaction_model.dart';
@@ -8,11 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:money_management_application/screens/transactions/chart_bar.dart';
 
 class WeekComparison extends StatelessWidget {
-// List<TransactionModel> get _recentTransactions {
-//     return TransactionDB.instance.list.where((tx) {
-//       return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
-//     }).toList();
-//   }
 
   List<TransactionModel> recentTransactions = [];
 
@@ -26,7 +19,8 @@ class WeekComparison extends StatelessWidget {
       for (var i = 0; i < recentTransactions.length; i++) {
         if (recentTransactions[i].date.day == weekDay.day &&
             recentTransactions[i].date.month == weekDay.month &&
-            recentTransactions[i].date.year == weekDay.year) {
+            recentTransactions[i].date.year == weekDay.year &&
+            recentTransactions[i].type==CategoryType.expense) {
           totalSum += recentTransactions[i].amount;
         }
       }

@@ -17,18 +17,28 @@ class TransactionList extends StatelessWidget {
               return Card(
                 child: ListTile(
                   leading: CircleAvatar(
-                    radius: 50,
-                    child: Text(
-                      DateFormat.MMMd().format(newList[index].date),
-                      textAlign: TextAlign.center,
+                    radius: 30,
+                    backgroundColor: Colors.black,
+                    child: CircleAvatar(
+                      radius: 27,
+                      backgroundColor: newList[index].type == CategoryType.income
+                          ? Colors.green
+                          : Colors.red,
+                      foregroundColor: Colors.black,
+                      child: Text(
+                        "\u{20B9}${newList[index].amount}",
+                        textAlign: TextAlign.center,
+                        textScaleFactor: 0.9,
+                      ),
                     ),
-                    backgroundColor: newList[index].type == CategoryType.income
-                        ? Colors.green
-                        : Colors.red,
-                    foregroundColor: Colors.black,
                   ),
-                  title: Text(newList[index].amount.toString()),
-                  subtitle: Text(newList[index].purpose),
+                  title: Text(newList[index].purpose,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  ),),
+                  subtitle: Text(
+                    DateFormat.MMMd().format(newList[index].date),
+                  ),
                   trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () => TransactionDB.instance
