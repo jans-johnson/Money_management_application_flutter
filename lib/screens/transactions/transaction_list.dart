@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:money_management_application/db/category/category_db.dart';
 import 'package:money_management_application/db/transactions/transaction_db.dart';
 import 'package:money_management_application/models/category/category_model.dart';
@@ -14,35 +15,52 @@ class TransactionList extends StatelessWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(10),
             itemBuilder: (context, index) {
-              return Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.black,
-                    child: CircleAvatar(
-                      radius: 27,
-                      backgroundColor: newList[index].type == CategoryType.income
-                          ? Colors.green
-                          : Colors.red,
-                      foregroundColor: Colors.black,
-                      child: Text(
-                        "\u{20B9}${newList[index].amount}",
-                        textAlign: TextAlign.center,
-                        textScaleFactor: 0.9,
+              return Slidable(
+                key: const ValueKey(0),
+                startActionPane:
+                    ActionPane(motion: const DrawerMotion(), children: [
+                  SlidableAction(
+                    onPressed: (_) => TransactionDB.instance
+                        .deleteTransaction(newList[index].id),
+                    backgroundColor: Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Delete',
+                  ),
+                  SlidableAction(
+                    onPressed: (_) {},
+                    backgroundColor: Color(0xFF21B7CA),
+                    foregroundColor: Colors.white,
+                    icon: Icons.edit,
+                    label: 'Edit',
+                  ),
+                ]),
+                child: Card(
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.black,
+                      child: CircleAvatar(
+                        radius: 27,
+                        backgroundColor:
+                            newList[index].type == CategoryType.income
+                                ? Colors.green
+                                : Colors.red,
+                        foregroundColor: Colors.black,
+                        child: Text(
+                          "\u{20B9}${newList[index].amount}",
+                          textAlign: TextAlign.center,
+                          textScaleFactor: 0.9,
+                        ),
                       ),
                     ),
-                  ),
-                  title: Text(newList[index].purpose,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold
-                  ),),
-                  subtitle: Text(
-                    DateFormat.MMMd().format(newList[index].date),
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => TransactionDB.instance
-                        .deleteTransaction(newList[index].id),
+                    title: Text(
+                      newList[index].purpose,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      DateFormat.MMMd().format(newList[index].date),
+                    ),
                   ),
                 ),
               );
