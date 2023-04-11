@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:money_management_application/db/category/category_db.dart';
 import 'package:money_management_application/db/transactions/transaction_db.dart';
 import 'package:money_management_application/models/category/category_model.dart';
+import 'package:money_management_application/screens/transactions/screen_add_transaction.dart';
 
 class TransactionList extends StatelessWidget {
   const TransactionList({super.key});
@@ -28,7 +29,9 @@ class TransactionList extends StatelessWidget {
                     label: 'Delete',
                   ),
                   SlidableAction(
-                    onPressed: (_) {},
+                    onPressed: (_) {
+                      showTransactionAdd(context, newList[index]);
+                    },
                     backgroundColor: Color(0xFF21B7CA),
                     foregroundColor: Colors.white,
                     icon: Icons.edit,

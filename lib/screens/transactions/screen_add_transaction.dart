@@ -12,7 +12,14 @@ var _selectedDate = null;
 var _categoryID = null;
 var _selectedType = CategoryType.income;
 CategoryModel? _selectedCategoryModel;
-Future<void> showTransactionAdd(BuildContext context) async {
+Future<void> showTransactionAdd(
+    BuildContext context, TransactionModel? model) async {
+  if (model != null) {
+    _purposeController.text = model.purpose;
+    _amountController.text = model.amount.toString();
+    _selectedDate = model.date;
+    _selectedType = model.type;
+  }
   showModalBottomSheet<dynamic>(
       isScrollControlled: true,
       context: context,
@@ -117,12 +124,26 @@ Future<void> showTransactionAdd(BuildContext context) async {
                             children: [
                               ElevatedButton(
                                   onPressed: () {
+                                    if (model != null) {
+                                      TransactionDB.instance
+                                          .deleteTransaction(model.id);
+                                    }
                                     addTransaction();
                                     Navigator.of(ctx1).pop();
+                                    _purposeController.clear();
+                                    _amountController.clear();
+                                    _selectedType = CategoryType.income;
+                                    _categoryID = null;
+                                    _selectedDate = null;
                                   },
                                   child: Text('Add')),
                               ElevatedButton(
                                   onPressed: () {
+                                    _purposeController.clear();
+                                    _amountController.clear();
+                                    _selectedType = CategoryType.income;
+                                    _categoryID = null;
+                                    _selectedDate = null;
                                     Navigator.of(ctx1).pop();
                                   },
                                   child: Text('Cancel'))

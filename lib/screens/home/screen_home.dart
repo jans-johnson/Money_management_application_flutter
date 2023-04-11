@@ -31,7 +31,7 @@ class ScreenHome extends StatelessWidget {
         onPressed: () {
           if (selectedIndexNotifier.value == 0) {
 
-            showTransactionAdd(context);
+            showTransactionAdd(context,null);
           
           } else {
             showCategoryAddPopup(context);
