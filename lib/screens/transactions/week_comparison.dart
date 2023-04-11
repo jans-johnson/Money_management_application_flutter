@@ -31,10 +31,10 @@ class WeekComparison extends StatelessWidget {
         }
       }
       return {
-        'day': DateFormat.E().format(weekDay).substring(0, 1),
+        'day': DateFormat.E().format(weekDay),//.substring(0, 1)
         'amount': totalSum,
       };
-    });
+    }).reversed.toList();
   }
 
   double get totalSpending {
@@ -56,13 +56,17 @@ class WeekComparison extends StatelessWidget {
           return Card(
             elevation: 6,
             margin: EdgeInsets.all(20),
-            child: Row(
-              children: groupedTransactionValues.map((data) {
-                return ChartBar(
-                    data['day'].toString(),
-                    data['amount'] as double,
-                    totalSpending==0.0 ? 0.0 :(data['amount'] as double) / totalSpending);
-              }).toList(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: groupedTransactionValues.map((data) {
+                  return ChartBar(
+                      data['day'].toString(),
+                      data['amount'] as double,
+                      totalSpending==0.0 ? 0.0 :(data['amount'] as double) / totalSpending);
+                }).toList(),
+              ),
             ),
           );
         });
