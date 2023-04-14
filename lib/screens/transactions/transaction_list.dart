@@ -50,10 +50,12 @@ class TransactionList extends StatelessWidget {
                                 ? Colors.green
                                 : Colors.red,
                         foregroundColor: Colors.black,
-                        child: Text(
-                          "\u{20B9}${newList[index].amount}",
-                          textAlign: TextAlign.center,
-                          textScaleFactor: 0.9,
+                        child: FittedBox(
+                          child: Text(
+                            "\u{20B9}${newList[index].amount}",
+                            textAlign: TextAlign.center,
+                            textScaleFactor: 0.9,
+                          ),
                         ),
                       ),
                     ),

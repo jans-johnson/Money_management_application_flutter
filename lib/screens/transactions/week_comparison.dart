@@ -55,10 +55,13 @@ class WeekComparison extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: groupedTransactionValues.map((data) {
-                  return ChartBar(
-                      data['day'].toString(),
-                      data['amount'] as double,
-                      totalSpending==0.0 ? 0.0 :(data['amount'] as double) / totalSpending);
+                  return Flexible(
+                    fit: FlexFit.tight,
+                    child: ChartBar(
+                        data['day'].toString(),
+                        data['amount'] as double,
+                        totalSpending==0.0 ? 0.0 :(data['amount'] as double) / totalSpending),
+                  );
                 }).toList(),
               ),
             ),
