@@ -14,7 +14,7 @@ class TransactionList extends StatelessWidget {
         valueListenable: TransactionDB.instance.transactionListNotifier,
         builder: (BuildContext context, newList, Widget? _) {
           Future.delayed(Duration.zero, () {
-            if (newList.length <= 3)
+            if (newList.length <= 3) {
               showToast(
                 'Swipe Right For More Options \u{2192}',
                 context: context,
@@ -26,6 +26,7 @@ class TransactionList extends StatelessWidget {
                 curve: Curves.ease,
                 reverseCurve: Curves.linear,
               );
+            }
           });
 
           return ListView.separated(
@@ -103,7 +104,7 @@ class TransactionList extends StatelessWidget {
             },
             separatorBuilder: (ctx, index) {
               return const SizedBox(
-                height: 2,
+                height: .5,
               );
             },
             itemCount: newList.length,
