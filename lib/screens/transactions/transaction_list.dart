@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:money_management_application/db/category/category_db.dart';
 import 'package:money_management_application/db/transactions/transaction_db.dart';
 import 'package:money_management_application/models/category/category_model.dart';
 import 'package:money_management_application/screens/transactions/screen_add_transaction.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 class TransactionList extends StatelessWidget {
   const TransactionList({super.key});
@@ -13,6 +13,21 @@ class TransactionList extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: TransactionDB.instance.transactionListNotifier,
         builder: (BuildContext context, newList, Widget? _) {
+          Future.delayed(Duration.zero, () {
+            if (newList.length <= 3)
+              showToast(
+                'Swipe Right For More Options \u{2192}',
+                context: context,
+                animation: StyledToastAnimation.fade,
+                reverseAnimation: StyledToastAnimation.slideToRightFade,
+                position: StyledToastPosition.center,
+                animDuration: Duration(seconds: 1),
+                duration: Duration(seconds: 3),
+                curve: Curves.ease,
+                reverseCurve: Curves.linear,
+              );
+          });
+
           return ListView.separated(
             padding: const EdgeInsets.all(10),
             itemBuilder: (context, index) {
@@ -41,27 +56,30 @@ class TransactionList extends StatelessWidget {
                 child: Card(
                   child: ListTile(
                     leading: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                              colors: newList[index].type != CategoryType.income?[
-                                Color.fromARGB(255, 162, 110, 125),
-                                Colors.red,
-                              ]:[
-                                Color.fromARGB(255, 113, 230, 139),
-                                Colors.green,
-                              ],
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Icon(IconData(
-                              newList[index].category.categoryIcon,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                            colors: newList[index].type != CategoryType.income
+                                ? [
+                                    Color.fromARGB(255, 162, 110, 125),
+                                    Colors.red,
+                                  ]
+                                : [
+                                    Color.fromARGB(255, 113, 230, 139),
+                                    Colors.green,
+                                  ],
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Icon(
+                          IconData(newList[index].category.categoryIcon,
                               fontFamily: 'MaterialIcons'),
-                              color: Colors.black,),
+                          color: Colors.black,
                         ),
                       ),
+                    ),
                     title: Text(
                       newList[index].purpose,
                       style: TextStyle(fontWeight: FontWeight.bold),
